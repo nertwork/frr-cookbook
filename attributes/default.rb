@@ -1,7 +1,7 @@
-default['quagga']['dir'] = '/etc/quagga'
+default['quagga']['dir'] = '/etc/frr'
 
-default['quagga']['user'] = 'quagga'
-default['quagga']['group'] = 'quagga'
+default['frr']['user'] = 'frr'
+default['frr']['group'] = 'frr'
 
 default['quagga']['daemons']['zebra'] = true
 default['quagga']['daemons']['ospfd'] = false
@@ -13,8 +13,8 @@ default['quagga']['daemons']['isisd'] = false
 default['quagga']['daemons']['babeld'] = false
 
 # insecured default username and password. overwrite when deploy
-default['quagga']['password'] = 'quagga'
-default['quagga']['enabled_password'] = 'quagga'
+default['frr']['password'] = 'frr'
+default['frr']['enabled_password'] = 'frr'
 
 default['quagga']['integrated_vtysh_config'] = false
 default['quagga']['enable_reload'] = true
