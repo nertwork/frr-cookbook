@@ -1,10 +1,10 @@
-name 'quagga'
-maintainer 'Ian Clark'
-maintainer_email 'ian@f85.net'
+name 'frr'
+maintainer 'James Gomez'
+maintainer_email 'james@nertwork.com'
 license 'Apache 2.0'
-description 'Generic Quagga cookbook'
+description 'Generic FRR cookbook'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.4.2'
+version '0.5.1'
 
-source_url 'https://github.com/floored1585/quagga-cookbook' if respond_to?(:source_url)
-issues_url 'https://github.com/floored1585/quagga-cookbook/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/nertwork/frr-cookbook' if respond_to?(:source_url)
+issues_url 'https://github.com/nertwork/frr-cookbook/issues' if respond_to?(:issues_url)
