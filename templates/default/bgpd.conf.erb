@@ -1,0 +1,136 @@
+!!! BGP CONFIGURATION
+!
+<% unless node['quagga']['integrated_vtysh_config'] # {{{ integrated_vtysh_config -%>
+hostname bgpd
+password <%= node['quagga']['password'] %>
+enable password <%= node['quagga']['enabled_password'] %>
+log file /var/log/quagga/bgpd.log
+!
+<% end # }}} !integrated_vtysh_config -%>
+<% @local_asns.each do |asn, data| -%>
+router bgp <%= asn %>
+  <% if router_id = data['router_id'] || node['quagga']['router_id'] -%>
+ bgp router-id <%= router_id %>
+  <% end -%>
+  <% if data['multipath_relax'] -%>
+ bgp bestpath as-path multipath-relax
+  <% end -%>
+  <% if data['compare_routerid'] -%>
+ bgp bestpath compare-routerid
+  <% end -%>
+  <% if data['hold_time'] && data['keepalive_interval'] -%>
+ timers bgp <%= data['keepalive_interval'] %> <%= data['hold_time'] %>
+  <% end -%>
+  <% if data['log_neighbor_changes'] -%>
+ bgp log-neighbor-changes
+  <% end -%>
+<%-# {{{ address-family independent neighbor options -%>
+  <% if data['neighbors'] -%>
+    <% data['neighbors'].sort_by(&method(:sort_by_bgp_neighbor)).each do |neighbor, n_opts| -%>
+      <%  # A Neighbor MUST start with one of the following:
+          # - neighbor 1.2.3.4 remote-as  (numbered peer)
+          # - neighbor string peer-group (peer-group definition)
+          # - neighbor eth0 interface (peer_type='interface', peer_type='interface v6only')
+          # Failure to do so will cause Quagga error: "Specify remote-as or peer-group commands first"
+          # peer-group definitions also need to come BEFORE any neighbors that are members of those peer-groups
+        -%>
+      <% if n_opts['peer_group'] && n_opts['peer_group'].is_a?(TrueClass) -%>
+ neighbor <%= neighbor %> peer-group
+      <% end -%>
+      <% if n_opts['peer_type'] -%>
+ neighbor <%= neighbor %> <%= n_opts['peer_type'] %>
+      <% end -%>
+      <% if n_opts['remote_as'] -%>
+ neighbor <%= neighbor %> remote-as <%= n_opts['remote_as'] %>
+      <% end -%>
+      <% if n_opts['peer_group'] && n_opts['peer_group'].is_a?(String) -%>
+ neighbor <%= neighbor %> peer-group <%= n_opts['peer_group'] %>
+      <% end -%>
+      <% # End of required first items ######################################### -%>
+      <% if n_opts['description'] -%>
+ neighbor <%= neighbor %> description <%= n_opts['description'] %>
+      <% end -%>
+      <% if n_opts['local_as'] -%>
+ neighbor <%= neighbor %> local-as <%= n_opts['local_as'] %>
+      <% end -%>
+      <% if n_opts['ebgp_multihop'] -%>
+ neighbor <%= neighbor %> ebgp-multihop <%= n_opts['ebgp_multihop'] %>
+      <% end -%>
+      <% if n_opts['connect_timer'] -%>
+ neighbor <%= neighbor %> timers connect <%= n_opts['connect_timer'] %>
+      <% end -%>
+      <% Array(n_opts['capability']).compact.each do |capa| -%>
+ neighbor <%= neighbor %> capability <%= capa %>
+      <% end -%>
+      <% if n_opts['peer_group_range'] -%>
+        <% Array(n_opts['peer_group_range']).each do |range| -%>
+ bgp listen range <%= range %> peer-group <%= neighbor %>
+        <% end -%>
+      <% end -%>
+    <% end -%>
+  <% end -%>
+<%-# }}} address-family independent neighbor options -%>
+<%-# {{{ address-family -%>
+  <% data['address_family'].sort.each do |address_family, af_opts| # sorted to ensure ipv4 comes first -%>
+ !
+  <% unless address_family == 'ipv4 unicast' -%>
+ address-family <%= address_family %>
+  <% end -%>
+    <% Array(af_opts['redistribute']).each do |route_type| -%>
+      <% next unless %w( babel connected isis kernel ospf ospf6 ripng static ).include? route_type -%>
+  redistribute <%= route_type %>
+    <% end -%>
+    <% (af_opts['aggregate_address'] || {}).each do |range, agg_opts| -%>
+  aggregate-address <%= range %> <%= agg_opts if agg_opts.is_a?(String) %>
+    <% end -%>
+    <% if af_opts['max_paths'] -%>
+  maximum-paths <%= af_opts['max_paths'] %>
+    <% end -%>
+<%-# {{{ neighbor -%>
+    <% next unless af_opts['neighbors'] -%>
+    <% af_opts['neighbors'].sort_by(&method(:sort_by_bgp_neighbor)).each do |neighbor, n_opts| -%>
+      <% next if n_opts['ipv6'] && address_family != 'ipv6' # Skip ipv6 neighbors in ipv4 AF -%>
+      <% unless address_family.include?('ipv4') -%>
+  neighbor <%= neighbor %> activate
+      <% end -%>
+      <% if n_opts['soft_reconfig_in'] -%>
+  neighbor <%= neighbor %> soft-reconfiguration inbound
+      <% end -%>
+      <% if n_opts['next_hop_self'] -%>
+  neighbor <%= neighbor %> next-hop-self <%= n_opts['next_hop_self'] if n_opts['next_hop_self'].is_a?(String) %>
+      <% end -%>
+      <% Array(n_opts['capability']).compact.each do |capa| -%>
+  neighbor <%= neighbor %> capability <%= capa %>
+      <% end -%>
+      <% if n_opts['default_originate'] -%>
+  neighbor <%= neighbor %> default-originate <%= 'route-map' if n_opts['default_originate_map'] %> <%= n_opts['default_originate_map'] %>
+      <% end -%>
+<%-# {{{ neighbor prefix-list -%>
+      <% if n_opts['prefix_list_in'] -%>
+  neighbor <%= neighbor %> prefix-list <%= n_opts['prefix_list_in'] %> in
+      <% end -%>
+      <% if n_opts['prefix_list_out'] -%>
+  neighbor <%= neighbor %> prefix-list <%= n_opts['prefix_list_out'] %> out
+      <% end -%>
+<%-# }}} neighbor prefix-list -%>
+<%-# {{{ neighbor route-map -%>
+      <% if n_opts['route_map_in'] -%>
+  neighbor <%= neighbor %> route-map <%= n_opts['route_map_in'] %> in
+      <% end -%>
+      <% if n_opts['route_map_out'] -%>
+  neighbor <%= neighbor %> route-map <%= n_opts['route_map_out'] %> out
+      <% end -%>
+      <% if n_opts['route_map_import'] -%>
+  neighbor <%= neighbor %> route-map <%= n_opts['route_map_import'] %> import
+      <% end -%>
+      <% if n_opts['route_map_export'] -%>
+  neighbor <%= neighbor %> route-map <%= n_opts['route_map_export'] %> export
+      <% end -%>
+<%-# }}} neighbor route-map -%>
+    <% end -%>
+<%-# }}} neighbor -%>
+  <% end -%>
+<%-# }}} address-family -%>
+<% end -%>
+!<%# vim: et foldmethod=marker
+-%>

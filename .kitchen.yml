@@ -1,0 +1,35 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: false
+  chef_solo_path: '/usr/bin/chef-solo'
+
+platforms:
+  - name: cumulus-vx-2.5.3
+    driver:
+      box: cumulus-vx-2.5.3
+      box_url: 'https://objects-us-west-1.dream.io/public-github/vagrant/boxes/cumulus-vx-2.5.3-chef-vbox.box'
+      provision: true
+      vagrantfiles: ['test/provision-chef.rb']
+  - name: ubuntu/trusty64
+    driver:
+      box: ubuntu/trusty64
+      box_url: 'ubuntu/trusty64'
+      provision: true
+      vagrantfiles: ['test/provision-chef.rb']
+    provisioner:
+      name: chef_solo
+      chef_omnibus_root: '/usr'
+    busser:
+      ruby_bindir: /usr/bin
+
+suites:
+  - name: a
+    run_list:
+      - recipe[quagga-test::default_a]
+  - name: b
+    run_list:
+      - recipe[quagga-test::default_b]
