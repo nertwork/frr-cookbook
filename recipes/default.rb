@@ -70,16 +70,16 @@ if %w( debian ubuntu cumulus ).include? node['platform']
   end
 end
 
-integrated_config = node['frr']['integrated_vtysh_config']
+integrated_config = node['quagga']['integrated_vtysh_config']
 
 # Combine the templates into a master file to be reloaded
 template 'integrated_config' do
-  path "#{node['frr']['dir']}/Quagga.conf"
-  source 'Quagga.conf.erb'
+  path "#{node['frr']['dir']}/frr.conf"
+  source 'frr.conf.erb'
   owner node['frr']['user']
   group node['frr']['group']
   mode '0644'
-  if node['frr']['enable_reload']
+  if node['quagga']['enable_reload']
     notifies :reload, 'service[frr]', :delayed
   else
     notifies :restart, 'service[frr]', :delayed

@@ -8,7 +8,7 @@ bgp multiple-instance
 <% end -%>
 hostname <%= node['hostname'] %>
 username root nopassword
-password <%= node['quagga']['password'] %>
-enable password <%= node['quagga']['enabled_password'] %>
-log file /var/log/quagga/vtysh.log
+password <%= node['frr']['password'] %>
+enable password <%= node['frr']['enabled_password'] %>
+log syslog informational
 log timestamp precision 6

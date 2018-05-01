@@ -1,0 +1,5 @@
+<%= File.read("#{node['frr']['dir']}/vtysh.conf") %>
+<%= File.read("#{node['frr']['dir']}/zebra.conf") %>
+<%= File.read("#{node['frr']['dir']}/bgpd.conf") if node['quagga']['daemons']['bgpd'] %>
+<%= File.read("#{node['frr']['dir']}/ospfd.conf") if node['quagga']['daemons']['ospfd'] %>
+<%= File.read("#{node['frr']['dir']}/ospf6d.conf") if node['quagga']['daemons']['ospf6d'] %>

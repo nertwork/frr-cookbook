@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: quagga-test
+# Cookbook Name:: frr-test
 # Recipe:: bgp_b
 #
 
@@ -11,4 +11,4 @@ node.set['quagga']['bgp']['64512']['neighbors']['hosts']['peer_group'] = true
 node.set['quagga']['bgp']['64512']['neighbors']['hosts']['peer_group_range'] = ['10.0.0.0/8', '192.168.0.0/16']
 node.set['quagga']['bgp']['64512']['address_family']['ipv6']['max_paths'] = 5
 
-include_recipe 'quagga::bgpd'
+include_recipe 'frr::bgpd'

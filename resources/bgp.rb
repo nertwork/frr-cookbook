@@ -1,6 +1,6 @@
 #
 # Author:: Bao Nguyen <opensource-cookbooks@ooyala.com>
-# Cookbook Name:: quagga
+# Cookbook Name:: frr
 # Resource:: bgp
 #
 # Copyright 2014, Bao Nguyen

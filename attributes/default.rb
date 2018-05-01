@@ -1,4 +1,4 @@
-default['quagga']['dir'] = '/etc/frr'
+default['frr']['dir'] = '/etc/frr'
 
 default['frr']['user'] = 'frr'
 default['frr']['group'] = 'frr'

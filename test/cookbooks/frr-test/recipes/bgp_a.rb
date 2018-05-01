@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: quagga-test
+# Cookbook Name:: frr-test
 # Recipe:: bgp_a
 #
 
@@ -62,4 +62,4 @@ node.set['quagga']['bgp']['64512']['address_family']['ipv6']['redistribute'] = "
 node.set['quagga']['bgp']['64512']['address_family']['ipv6']['aggregate_address']['100::/64'] = true
 node.set['quagga']['bgp']['64512']['address_family']['ipv6']['aggregate_address']['200::/64'] = 'summary-only'
 
-include_recipe 'quagga::bgpd'
+include_recipe 'frr::bgpd'

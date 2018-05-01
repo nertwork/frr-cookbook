@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: quagga-test
+# Cookbook Name:: frr-test
 # Recipe:: default_a
 #
 

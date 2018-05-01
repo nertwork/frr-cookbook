@@ -1,7 +1,7 @@
 #
 # Original Author:: Bao Nguyen <ngqbao@gmail.com>
 # Current Maintainer:: Ian Clark <ian@f85.net>
-# Cookbook Name:: quagga
+# Cookbook Name:: frr
 # Recipe:: ospf6d
 #
 # Copyright 2014, Bao Nguyen
@@ -22,8 +22,8 @@
 
 node.default['quagga']['daemons']['ospf6d'] = true
 
-include_recipe 'quagga'
+include_recipe 'frr'
 
-quagga_ospf6 'ospf6' do
+frr_ospf6 'ospf6' do
   not_if { node['quagga']['ospf6']['areas'].empty? }
 end

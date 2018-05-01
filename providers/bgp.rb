@@ -1,7 +1,7 @@
 #
 # Original Author:: Bao Nguyen <opensource-cookbooks@ooyala.com>
 # Current Maintainer:: Ian Clark <ian@f85.net>
-# Cookbook Name:: quagga
+# Cookbook Name:: frr
 # Provider:: bgp
 #
 # Copyright 2014, Ooyala
@@ -29,14 +29,14 @@ action :add do
     node.default['quagga']['bgp'][asn]['address_family']['ipv4 unicast'] = node['quagga']['bgp'][asn]
   end
 
-  bgpd_path = "#{node['quagga']['dir']}/bgpd.conf"
+  bgpd_path = "#{node['frr']['dir']}/bgpd.conf"
   Chef::Log.info "Adding #{new_resource.name}: acl to #{bgpd_path}"
 
   template bgpd_path do
-    cookbook 'quagga'
+    cookbook 'frr'
     source 'bgpd.conf.erb'
-    owner node['quagga']['user']
-    group node['quagga']['group']
+    owner node['frr']['user']
+    group node['frr']['group']
     mode '0644'
     variables(
       local_asns: node['quagga']['bgp']
@@ -50,7 +50,7 @@ action :add do
 end
 
 action :remove do
-  bgpd_path = "#{node['quagga']['dir']}/#{new_resource.name}"
+  bgpd_path = "#{node['frr']['dir']}/#{new_resource.name}"
   if ::File.exist?(bgpd_path)
     Chef::Log.info "Removing #{new_resource.file_type}: bgp from #{bgpd_path}"
     file bgpd_path do

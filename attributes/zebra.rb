@@ -1,4 +1,4 @@
-include_attribute 'quagga'
+include_attribute 'frr'
 
 default['quagga']['interfaces'] = {}
 default['quagga']['static_routes'] = {}

@@ -1,3 +1,3 @@
-include_attribute 'quagga'
+include_attribute 'frr'
 
 default['quagga']['bgp'] = {}

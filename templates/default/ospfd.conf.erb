@@ -2,8 +2,8 @@
 !
 <% unless node['quagga']['integrated_vtysh_config'] -%>
 hostname ospfd
-password <%= node['quagga']['password'] %>
-enable password <%= node['quagga']['enabled_password'] %>
+password <%= node['frr']['password'] %>
+enable password <%= node['frr']['enabled_password'] %>
 log file /var/log/quagga/ospfd.log
 !
 <% end -%>

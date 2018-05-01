@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: quagga-test
+# Cookbook Name:: frr-test
 # Recipe:: ospf_a
 #
 
@@ -10,4 +10,4 @@ node.set['quagga']['ospf']['areas']['0.0.0.1']['networks'] = ['10.0.0.0/8', '192
 node.set['quagga']['ospf']['areas']['1.1.1.1']['networks'] = '172.16.0.0/12'
 node.set['quagga']['ospf']['areas']['2.2.2.2']['stub_area'] = true
 
-include_recipe 'quagga::ospfd'
+include_recipe 'frr::ospfd'
