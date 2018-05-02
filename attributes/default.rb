@@ -1,5 +1,5 @@
 # frr install location and option
-default['frr']['install'] = false
+default['frr']['install'] = true
 
 default['frr']['dir'] = '/etc/frr'
 default['frr']['user'] = 'frr'
