@@ -34,6 +34,7 @@ an Array of Strings for multiple values.
 
 Attribute        | Description |Type | Default
 -----------------|-------------|-----|--------
+`node['frr']['install']` | This should be used if you want to install FRR. | Boolean | `false`
 `node['quagga']['router_id']` | Router-id to use for all protocols. This is superseded by protocol-specific router-ids, if they are defined. | String | `nil`
 `node['quagga']['enable_reload']` | Must be true in to enable reloading the quagga service (only applies to certain versions). | Boolean | `true`
 `node['quagga']['max_instances']` | Sets /etc/defaults/quagga "MAX_INSTANCES" value. | Integer | `5`
@@ -259,12 +260,11 @@ Author and License
 ===================
 ### Maintainer, Authors and Contributors
 
-
 | Role			| Individual
 |:----------------------|:-----------------------------------------|
-| **Author** (pre-0.2)  | [Ooyala Inc.](https://github.com/ooyala)
-| **Maintainer** (0.2+) | [Ian Clark](https://github.com/floored1585)
-| **Contributor**       | [James Farr Gomez](https://github.com/nertwork)
+| **Author** (0.2-0.4)  | [Ian Clark](https://github.com/floored1585)
+| **Maintaner** (0.5+)  | [James Farr Gomez](https://github.com/nertwork)
+| **Contributor**       | [Ian Clark](https://github.com/floored1585)
 
 Copyright 2014, Ooyala Inc.  
 Copyright 2015-2017, Contributers
