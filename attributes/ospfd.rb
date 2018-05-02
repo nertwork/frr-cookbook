@@ -1,4 +1,4 @@
-include_attribute 'quagga'
+include_attribute 'frr'
 
 default['quagga']['ospf']['areas'] = {}
 default['quagga']['ospf']['interfaces'] = {}

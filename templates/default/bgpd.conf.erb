@@ -2,8 +2,8 @@
 !
 <% unless node['quagga']['integrated_vtysh_config'] # {{{ integrated_vtysh_config -%>
 hostname bgpd
-password <%= node['quagga']['password'] %>
-enable password <%= node['quagga']['enabled_password'] %>
+password <%= node['frr']['password'] %>
+enable password <%= node['frr']['enabled_password'] %>
 log file /var/log/quagga/bgpd.log
 !
 <% end # }}} !integrated_vtysh_config -%>

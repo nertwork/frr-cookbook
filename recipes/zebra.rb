@@ -1,11 +1,11 @@
 #
-# Cookbook Name:: quagga
+# Cookbook Name:: frr
 # Recipe:: zebra
 #
 
-include_recipe 'quagga'
+include_recipe 'frr'
 
-quagga_zebra 'zebra' do
+frr_zebra 'zebra' do
   not_if { node['quagga']['prefix_lists'].empty? &&
          node['quagga']['interfaces'].empty? &&
          node['quagga']['static_routes'].empty? }

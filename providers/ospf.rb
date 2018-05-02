@@ -1,7 +1,7 @@
 #
 # Original Author:: Bao Nguyen <opensource-cookbooks@ooyala.com>
 # Current Maintainer:: Ian Clark <ian@f85.net>
-# Cookbook Name:: quagga
+# Cookbook Name:: frr
 # Provider:: ospf
 #
 # Copyright 2014, Ooyala
@@ -23,14 +23,14 @@
 action :add do
   integrated_config = node['quagga']['integrated_vtysh_config']
 
-  ospfd_path = "#{node['quagga']['dir']}/ospfd.conf"
+  ospfd_path = "#{node['frr']['dir']}/ospfd.conf"
   Chef::Log.info "Adding #{new_resource.name}: ospf to #{ospfd_path}"
 
   template ospfd_path do
-    cookbook 'quagga'
+    cookbook 'frr'
     source 'ospfd.conf.erb'
-    owner node['quagga']['user']
-    group node['quagga']['group']
+    owner node['frr']['user']
+    group node['frr']['group']
     mode '0644'
     variables(
       areas: node['quagga']['ospf']['areas'],
@@ -50,7 +50,7 @@ action :add do
 end
 
 action :remove do
-  ospfd_path = "#{node['quagga']['dir']}/ospfd.conf"
+  ospfd_path = "#{node['frr']['dir']}/ospfd.conf"
   if ::File.exist?(ospfd_path)
     Chef::Log.info "Removing #{new_resource.file_type}: ospf from #{ospfd_path}"
     file ospfd_path do

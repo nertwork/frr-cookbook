@@ -5,7 +5,7 @@
 Description
 ===========
 
-This is a fork of [https://github.com/ooyala/quagga-cookbook](https://github.com/ooyala/quagga-cookbook).  The functionality here is much different, and this cookbook is not backwards comptaible.
+This is a fork of [https://github.com/floored1585/quagga-cookbook](https://github.com/ooyala/quagga-cookbook).  The functionality here is much different, and this cookbook is not backwards comptaible.
 
 This cookbook provides an interface via attributes to serveral FRR daemons. It's written with
 the intention of deploying FRR on [Cumulus](http://cumulusnetworks.com) switches, and managing
@@ -170,7 +170,7 @@ Attribute        | Description |Type | Default
 Usage
 =====
 
-Simply set the desired attributes (see Attributes section above) then call the proper recipe (quagga::bgpd, quagga::ospfd).  There is also a provider for zebra, but no recipe as of yet.
+Simply set the desired attributes (see Attributes section above) then call the proper recipe (frr::bgpd, frr::ospfd).  There is also a provider for zebra, but no recipe as of yet.
 
 ### BGP Example
 
@@ -186,7 +186,7 @@ node.set['quagga']['bgp']['64512']['neighbors']['192.168.52.1']['remote_as'] = 6
 node.set['quagga']['bgp']['64512']['neighbors']['192.168.52.1']['default_originate'] = true
 node.set['quagga']['bgp']['64512']['neighbors']['192.168.99.1']['peer_group'] = 'hosts'
 
-include_recipe 'quagga::bgpd'
+include_recipe 'frr::bgpd'
 ```
 ### Unnumbered BGPv6 Example
 
@@ -199,7 +199,7 @@ node.set['quagga']['bgp']['64511']['neighbors']['swp1']['soft_reconfig_in'] = tr
 node.set['quagga']['bgp']['64511']['neighbors']['swp1']['ipv6'] = true
 node.set['quagga']['bgp']['64511']['address_family']['ipv6'] = {}
 
-include_recipe 'quagga::bgpd'
+include_recipe 'frr::bgpd'
 ```
 
 ### OSPF Example
@@ -213,7 +213,7 @@ node.set['quagga']['ospf']['passive_default'] = false
 node.set['quagga']['ospf']['areas'][0.0.0.0]['networks'] = '10.0.0.0/8'
 node.set['quagga']['ospf']['passive_ints'] = ['lo', 'br-access']
 
-include_recipe 'quagga::ospfd'
+include_recipe 'frr::ospfd'
 ```
 
 ### Static Route Example
@@ -223,7 +223,7 @@ The following example will create a static route to 10.0.0.0/24 using the next h
 ```ruby
 node.set['quagga']['static_routes']['10.0.0.0/24'] = '172.16.1.1'
 
-include_recipe 'quagga::zebra'
+include_recipe 'frr::zebra'
 ```
 ### Multiple Routing-Instaces (VRFs) Example
 

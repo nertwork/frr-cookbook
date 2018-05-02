@@ -1,7 +1,7 @@
 #
 # Original Author:: Bao Nguyen <ngqbao@gmail.com>
 # Current Maintainer:: Ian Clark <ian@f85.net>
-# Cookbook Name:: quagga
+# Cookbook Name:: frr
 # Recipe:: bgpd
 #
 # Copyright 2014, Bao Nguyen
@@ -22,8 +22,8 @@
 
 node.default['quagga']['daemons']['bgpd'] = true
 
-include_recipe 'quagga'
+include_recipe 'frr'
 
-quagga_bgp 'bgp' do
+frr_bgp 'bgp' do
   not_if { node['quagga']['bgp'].empty? }
 end

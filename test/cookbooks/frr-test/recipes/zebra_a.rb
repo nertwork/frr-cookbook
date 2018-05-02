@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: quagga-test
+# Cookbook Name:: frr-test
 # Recipe:: zebra_a
 #
 
@@ -37,4 +37,4 @@ node.set['quagga']['static_routes']['10.0.0.0/24'] = '172.16.1.1'
 node.set['quagga']['static_routes']['10.0.0.0/24'] = '172.16.1.1 table 12'
 node.set['quagga']['static_routes']['1::1/128'] = 'lo'
 
-include_recipe 'quagga::zebra'
+include_recipe 'frr::zebra'
