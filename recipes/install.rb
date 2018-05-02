@@ -2,7 +2,7 @@
 # Original Author:: Bao Nguyen <ngqbao@gmail.com>
 # Current Maintainer:: James Gomez <james@nertwork.com>
 # Cookbook Name:: frr
-# Recipe:: default
+# Recipe:: install
 #
 # Copyright 2014, Bao Nguyen
 # Copyright 2015, Ian Clark
@@ -21,10 +21,52 @@
 # limitations under the License.
 #
 
-include_recipe 'frr::install' if node['frr']['install']
+package 'frr' do
+  action :install
+end
+
+directory node['frr']['dir'] do
+  owner node['frr']['user']
+  group node['frr']['group']
+  mode '0755'
+  action :create
+end
 
 service 'frr' do
-  supports status: true, restart: true, reload: true
+  action :enable
+end
+
+if %w( debian ubuntu cumulus ).include? node['platform']
+  template "#{node['frr']['dir']}/daemons" do
+    source 'daemons.erb'
+    owner node['frr']['user']
+    group node['frr']['group']
+    mode '0644'
+    notifies :restart, 'service[frr]', :delayed
+  end
+
+  template "#{node['frr']['dir']}/debian.conf" do
+    source 'debian.conf.erb'
+    owner node['frr']['user']
+    group node['frr']['group']
+    mode '0644'
+  end
+
+  %w( zebra.conf ospfd.conf ospf6d.conf bgpd.conf ).each do |file|
+    file "#{node['frr']['dir']}/#{file}" do
+      owner node['frr']['user']
+      group node['frr']['group']
+      mode '0644'
+      action :touch
+    end
+  end
+
+  template '/etc/default/frr' do
+    source 'frr.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+  end
 end
 
 integrated_config = node['quagga']['integrated_vtysh_config']

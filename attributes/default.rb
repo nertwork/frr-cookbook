@@ -1,7 +1,10 @@
-default['frr']['dir'] = '/etc/frr'
+# frr install location and option
+default['frr']['install'] = false
 
+default['frr']['dir'] = '/etc/frr'
 default['frr']['user'] = 'frr'
 default['frr']['group'] = 'frr'
+
 
 default['quagga']['daemons']['zebra'] = true
 default['quagga']['daemons']['ospfd'] = false
