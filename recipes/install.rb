@@ -1,11 +1,8 @@
 #
-# Original Author:: Bao Nguyen <ngqbao@gmail.com>
-# Current Maintainer:: James Gomez <james@nertwork.com>
+# Author:: James Gomez <james@nertwork.com>
 # Cookbook Name:: frr
 # Recipe:: install
 #
-# Copyright 2014, Bao Nguyen
-# Copyright 2015, Ian Clark
 # Copyright 2018, James Gomez
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
